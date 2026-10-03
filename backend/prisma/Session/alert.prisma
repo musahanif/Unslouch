@@ -1,0 +1,12 @@
+model Alert {
+  alert_id               String   @id @default(cuid()) 
+  session_id             String   
+  user_id                String  
+  triggered_at            DateTime?
+  trigger_reason         String?
+  slouch_duration_sec    Int?
+  dismissed_or_corrected Boolean?
+
+  session                Session @relation(fields: [session_id],references: [session_id])
+  user                   User @relation(fields: [user_id],references: [user_id])
+}

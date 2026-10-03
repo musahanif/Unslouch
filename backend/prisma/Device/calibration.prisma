@@ -1,0 +1,13 @@
+model Calibration {
+  calibration_id  String   @id @default(cuid())
+  device_id       String   
+  user_id         String   
+  baseline_pitch  Float?
+  baseline_roll   Float?
+  baseline_yaw    Float?
+  is_active       Boolean?
+  calibrated_at   DateTime?
+
+  device          Device @relation(fields: [device_id], references: [device_id])
+  user            User   @relation(fields: [user_id], references: [user_id])
+}

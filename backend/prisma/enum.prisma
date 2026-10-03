@@ -1,0 +1,24 @@
+enum SCOLIOSIS_TYPE {
+  THORACIC
+  LUMBAR
+  S_CURVE
+}
+
+enum Session_Status {
+  IN_PROGRESS
+  COMPLETED
+  ABORTED
+}
+
+enum Detected_activity {
+  SITTING
+  STANDING
+  WALKING
+  BENDING
+}
+
+enum Difficulty_Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}

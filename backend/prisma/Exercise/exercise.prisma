@@ -1,0 +1,11 @@
+model Exercise {
+  exercise_id      String           @id @default(cuid()) 
+  title            String
+  description      String?
+  target_area      String?
+  difficulty_level Difficulty_Level?
+  duration_sec     Int?
+
+  recommendations Exercise_Recomendation[]
+  exercise_logs   Exercise_Log[]
+}

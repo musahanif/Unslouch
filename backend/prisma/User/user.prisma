@@ -1,0 +1,18 @@
+model User {
+  user_id                    String         @id @default(cuid())
+  name                       String
+  email                      String         @unique
+  password                   String
+  scoliosis_type             SCOLIOSIS_TYPE?
+  target_daily_exercise_min  Int?
+  posture_alert_threshold_sec Int?
+  created_at                 DateTime       @default(now())
+  updated_at                 DateTime       @updatedAt
+
+  devices                    Device[]
+  calibrations               Calibration[]
+  sessions                   Session[]
+  alerts                     Alert[]
+  exercise_recommendations   Exercise_Recomendation[]
+  exercise_logs              Exercise_Log[]
+}

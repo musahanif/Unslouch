@@ -1,0 +1,13 @@
+model Exercise_Log {
+  log_id                String   @id @default(cuid()) 
+  user_id               String  
+  exercise_id           String   
+  recommendation_id     String   
+  completed_at          DateTime?
+  duration_performed_sec Int?
+  is_completed          Boolean?
+
+  user                  User @relation(fields: [user_id],references: [user_id])
+  exercise              Exercise @relation(fields: [exercise_id],references: [exercise_id])
+  recommendation        Exercise_Recomendation @relation(fields: [recommendation_id],references: [recommendation_id])
+}

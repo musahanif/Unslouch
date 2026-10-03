@@ -1,0 +1,11 @@
+model Posture_telemetry_logs {
+  log_id                 BigInt            @id @default(autoincrement())
+  session_id             String            
+  timestamp              DateTime?
+  detected_activity      Detected_activity?
+  angular_deviation_pitch Float?
+  angular_deviation_roll  Float?
+  is_unfavorable         Boolean?
+
+  session                Session @relation(fields: [session_id],references: [session_id])
+}

@@ -1,0 +1,16 @@
+model Session {
+  session_id             String         @id @default(cuid()) 
+  user_id                String         
+  device_id              String         
+  start_time             DateTime?
+  end_time               DateTime?
+  total_good_posture_sec Int?
+  total_slouch_sec       Int?
+  status                 Session_Status?
+
+  user                   User                     @relation(fields: [user_id], references: [user_id])
+  device                 Device                  @relation(fields: [device_id], references: [device_id])
+  posture_telemetry_logs Posture_telemetry_logs[]
+  alerts                 Alert[]
+  exercise_recommendations Exercise_Recomendation[]
+}

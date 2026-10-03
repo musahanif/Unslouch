@@ -1,0 +1,12 @@
+model Device {
+  device_id       String   @id @default(cuid())
+  user_id         String   
+  mac_address     String?  @unique
+  device_model    String?
+  battery_level   Int?
+  last_synced_at  DateTime?
+
+  user            User          @relation(fields: [user_id], references: [user_id])
+  calibrations    Calibration[]
+  sessions        Session[]
+}

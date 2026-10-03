@@ -1,0 +1,14 @@
+model Exercise_Recomendation {
+  recommendation_id String   @id @default(cuid()) 
+  user_id           String   
+  exercise_id       String   
+  session_id        String  
+  reason_pattern    String?
+  created_at        DateTime @default(now())
+
+  user              User     @relation(fields: [user_id],references: [user_id])
+  exercise          Exercise @relation(fields: [exercise_id],references: [exercise_id])
+  session           Session @relation(fields: [session_id],references: [session_id])
+
+  exercise_logs     Exercise_Log[]
+}
