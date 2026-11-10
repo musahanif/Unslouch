@@ -1,9 +1,7 @@
 export const Hero = () => {
     return (
-        <section className="flex  w-full h-[800px] overflow-hidden  relative">
-            <div>
-                Tes
-            </div>
+        <section className="relative bg-[#094A44] text-white flex items-center justify-center min-h-screen w-full overflow-hidden">
+            UnSlouch (Semangat Guys)
         </section>
     )
 }

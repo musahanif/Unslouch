@@ -93,7 +93,7 @@ router.post("/login", validateLogin, asyncHandler(login));
  *     summary: Log out the current user
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Logout successful. Clears the HTTP-only auth cookie.
@@ -111,7 +111,7 @@ router.post("/logout", authenticate, asyncHandler(logout));
  *     summary: Get current authenticated user's profile
  *     tags: [Auth]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: Current user retrieved successfully

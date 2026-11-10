@@ -1,0 +1,18 @@
+model RawSensorSample {
+  raw_sensor_sample_id BigInt @id @default(autoincrement())
+  batch_id             String
+  sample_index         Int
+  offset_ms            Int
+
+  ax                   Float
+  ay                   Float
+  az                   Float
+  gx                   Float
+  gy                   Float
+  gz                   Float
+
+  batch                RawSensorBatch @relation(fields: [batch_id], references: [raw_sensor_batch_id])
+
+  @@unique([batch_id, sample_index])
+  @@index([batch_id])
+}

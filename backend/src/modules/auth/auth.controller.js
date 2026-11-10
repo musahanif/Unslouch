@@ -1,10 +1,11 @@
+import { env } from "../../config/env.js";
 import { authService } from "./auth.service.js";
 import { sendSuccess } from "../../utils/apiResponse.js";
 
 const authCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: env.NODE_ENV === "production",
+  sameSite: "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/",
 };
@@ -13,7 +14,7 @@ const sendAuthenticatedResponse = (
   res,
   { statusCode = 200, message, data },
 ) => {
-  res.cookie("teksid_token", data.token, authCookieOptions);
+  res.cookie("unslouch_token", data.token, authCookieOptions);
 
   return sendSuccess(res, {
     statusCode,
@@ -44,14 +45,9 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (_req, res) => {
-  res.clearCookie("teksid_token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    path: "/",
-  });
+  res.clearCookie("unslouch_token", authCookieOptions);
 
-  sendSuccess(res, {
+  return sendSuccess(res, {
     message: "Logout successful.",
   });
 };

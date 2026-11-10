@@ -1,0 +1,21 @@
+model RawSensorBatch {
+  raw_sensor_batch_id String   @id @default(cuid())
+  device_id           String
+  session_id          String
+
+  client_batch_id     String
+
+  sampling_rate_hz    Int
+  sample_count        Int
+  started_at          DateTime
+  received_at         DateTime @default(now())
+
+  content_hash        String
+
+  device              Device            @relation(fields: [device_id], references: [device_id])
+  session             Session           @relation(fields: [session_id], references: [session_id])
+  samples             RawSensorSample[]
+
+  @@unique([device_id, client_batch_id])
+  @@index([session_id, started_at])
+}

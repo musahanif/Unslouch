@@ -1,17 +1,24 @@
+import { createServer } from "node:http";
+
 import app from "./app.js";
 import { connectDB, disconnectDB } from "./config/db.js";
 import { env } from "./config/env.js";
+import { attachRealtimeServer } from "./realtime/realtimeServer.js";
 
 let server;
+let realtime;
 let shuttingDown = false;
 
-const closeServer = () =>
-  new Promise((resolve, reject) => {
-    if (!server) {
-      resolve();
-      return;
-    }
+const closeServer = async () => {
+  if (realtime) {
+    await realtime.close();
+  }
 
+  if (!server) {
+    return;
+  }
+
+  await new Promise((resolve, reject) => {
     server.close((error) => {
       if (error) {
         reject(error);
@@ -21,6 +28,7 @@ const closeServer = () =>
       resolve();
     });
   });
+};
 
 const shutdown = async (signal, exitCode = 0) => {
   if (shuttingDown) {
@@ -34,6 +42,7 @@ const shutdown = async (signal, exitCode = 0) => {
     console.error("Graceful shutdown timed out");
     process.exit(1);
   }, 10_000);
+
   forceExitTimer.unref();
 
   try {
@@ -52,8 +61,11 @@ const startServer = async () => {
   try {
     await connectDB();
 
-    server = app.listen(env.PORT, () => {
-      console.log(`TEKSID API listening on port ${env.PORT}`);
+    server = createServer(app);
+    realtime = attachRealtimeServer(server);
+
+    server.listen(env.PORT, () => {
+      console.log(`UnSlouch API listening on port ${env.PORT}`);
     });
 
     server.on("error", (error) => {

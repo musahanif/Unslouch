@@ -1,12 +1,40 @@
 model Device {
   device_id       String   @id @default(cuid())
-  user_id         String   
+  user_id         String?  
+
+  //Physical identity
+  serial_number   String   @unique 
   mac_address     String?  @unique
   device_model    String?
+  firmware_version String?
+
+  // Credentials
+  setup_code_hash String?
+  credential_hash String?  @unique
+  credential_created_at   DateTime?
+  credential_rotated_at   DateTime?
+  credential_revoked_at   DateTime?
+
+  pending_credential_hash       String?
+  pending_credential_created_at DateTime?
+  pending_credential_expires_at DateTime?
+
+  
+  is_active       Boolean @default(true)
+  paired_at       DateTime?
   battery_level   Int?
+  last_seen_at    DateTime?
   last_synced_at  DateTime?
 
-  user            User          @relation(fields: [user_id], references: [user_id])
-  calibrations    Calibration[]
-  sessions        Session[]
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+
+
+  user                  User?          @relation(fields: [user_id], references: [user_id])
+  calibrations          Calibration[]
+  calibration_commands  CalibrationCommand[]
+  sessions              Session[]
+  raw_sensor_batches    RawSensorBatch[]
+
+  @@index([user_id])
 }

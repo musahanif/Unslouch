@@ -2,12 +2,27 @@ model Calibration {
   calibration_id  String   @id @default(cuid())
   device_id       String   
   user_id         String   
+
+  command_id      String?  @unique
+
   baseline_pitch  Float?
   baseline_roll   Float?
   baseline_yaw    Float?
+
+  sample_count    Int?
+  sampling_rate_hz Int?
+  pitch_std_dev    Float?
+  roll_std_dev     Float?
+  algorithm_version   String?
+  captured_at         DateTime?
+
   is_active       Boolean?
   calibrated_at   DateTime?
 
+  sessions        Session[]
+
   device          Device @relation(fields: [device_id], references: [device_id])
   user            User   @relation(fields: [user_id], references: [user_id])
+  command         CalibrationCommand? @relation(fields: [command_id], references: [command_id])
+  @@index([device_id,is_active])
 }

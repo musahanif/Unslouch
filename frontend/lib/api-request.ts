@@ -30,6 +30,7 @@ export async function apiFetch(
   try {
     return await fetch(input, {
       ...init,
+      credentials: 'include',
       signal,
     });
   } catch (error) {
@@ -40,7 +41,6 @@ export async function apiFetch(
       );
     }
 
-    // A caller deliberately cancelled it; do not falsely report a network outage.
     if (error instanceof DOMException && error.name === 'AbortError') {
       throw error;
     }

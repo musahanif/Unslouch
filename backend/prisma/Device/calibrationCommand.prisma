@@ -1,0 +1,23 @@
+model CalibrationCommand {
+    command_id      String  @id @default(cuid())
+    device_id       String
+    user_id         String
+
+    status          Calibration_Command_Status  @default(PENDING)
+    required_pose       String                     @default("NEUTRAL_UPRIGHT_STANDING")
+    sample_count        Int                        @default(300)
+    sampling_rate_hz    Int                        @default(50)
+
+    requested_at        DateTime                   @default(now())
+    expires_at          DateTime
+    last_delivered_at   DateTime?
+    delivery_count      Int                        @default(0)
+    completed_at        DateTime?
+
+    device              Device                     @relation(fields: [device_id], references: [device_id])
+    user                User                       @relation(fields: [user_id], references: [user_id])
+    calibration         Calibration?
+
+  @@index([device_id, status, expires_at])
+  @@index([user_id])
+}

@@ -5,8 +5,12 @@ enum SCOLIOSIS_TYPE {
 }
 
 enum Session_Status {
-  IN_PROGRESS
+  ACTIVE
+  FINISHING
+  PROCESSING
   COMPLETED
+  FAILED
+  INCOMPLETE
   ABORTED
 }
 
@@ -21,4 +25,12 @@ enum Difficulty_Level {
   BEGINNER
   INTERMEDIATE
   ADVANCED
+}
+
+enum Calibration_Command_Status {
+  PENDING
+  PROCESSING
+  COMPLETED
+  EXPIRED
+  CANCELLED
 }

@@ -15,4 +15,6 @@ model User {
   alerts                     Alert[]
   exercise_recommendations   Exercise_Recomendation[]
   exercise_logs              Exercise_Log[]
+
+  calibration_commands    CalibrationCommand[]
 }

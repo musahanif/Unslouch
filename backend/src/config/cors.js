@@ -1,12 +1,21 @@
 import { env } from "./env.js";
 
-const allowedOrigins = env.CORS_ORIGIN.split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+const allowedOrigins = [
+  env.FRONTEND_URL,
+  ...env.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
+].filter(Boolean);
+
+if (allowedOrigins.includes("*")) {
+  throw new Error(
+    "CORS_ORIGIN must list explicit origins when cookie authentication is enabled",
+  );
+}
+
+const uniqueAllowedOrigins = [...new Set(allowedOrigins)];
 
 export const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    if (!origin || uniqueAllowedOrigins.includes(origin)) {
       callback(null, true);
       return;
     }
@@ -17,5 +26,5 @@ export const corsOptions = {
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: !allowedOrigins.includes("*"),
+  credentials: true,
 };
