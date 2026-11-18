@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { Hero } from "@/modules/beranda/index";
-import { Welcome } from "@/modules/welcome";
+import { Landing } from "@/modules/auth/index";
 export default function Home() {
   return (
     <>
-      <Welcome />
-      <Hero />
+      <Landing />
     </>
   );
 }
