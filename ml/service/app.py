@@ -43,13 +43,13 @@ class Sample(BaseModel):                 # what ONE sensor reading must look lik
 
 
 class WindowRequest(BaseModel):          # body for /predict: one ~2 s window
-    accelUnit: Literal["m/s2", "g"] = "m/s2"   # Josh's backend uses g -> it can say so here
+    accelUnit: Literal["m/s2", "g"] = "g"   # Josh's backend uses g 
     samples: list[Sample] = Field(min_length=MIN_SAMPLES, max_length=200)
     # 30..200 readings; anything else is rejected automatically with an error
 
 
 class SessionRequest(BaseModel):         # body for /analyze-session: a whole session
-    accelUnit: Literal["m/s2", "g"] = "m/s2"
+    accelUnit: Literal["m/s2", "g"] = "g"
     samples: list[Sample] = Field(min_length=MIN_SAMPLES, max_length=200_000)
     # up to ~2.9 hours at 19.2 Hz
 
