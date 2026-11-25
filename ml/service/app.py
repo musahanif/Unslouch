@@ -25,8 +25,22 @@ LABEL_INFO = {                           # translate your labels into Josh's dat
     "bend": {"activity": "BENDING", "is_unfavorable": False},
 }
 
+R2_BUCKET = os.getenv("R2_BUCKET")       # set -> download the model from Cloudflare R2 at startup
+if R2_BUCKET:                            # not set -> use the local file (as before)
+    import boto3                         # S3 client; R2 speaks the same language as AWS S3
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=os.environ["R2_ENDPOINT"],             # https://<account-id>.r2.cloudflarestorage.com
+        aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],   # keys come from environment variables,
+        aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],   # never written in the code
+        region_name="auto",              # R2 always uses "auto"
+    )
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    s3.download_file(R2_BUCKET, os.getenv("R2_MODEL_KEY", "model.joblib"), str(MODEL_PATH))
+    print(f"Downloaded model from R2 bucket '{R2_BUCKET}'", flush=True)
+
 bundle = joblib.load(MODEL_PATH)         # load ONCE when the server starts (not per request)
-model = bundle["model"]                  # the trained Random Forest
+model = bundle["model"]                  # the trained model (Extra Trees)
 FEATURES = bundle["features"]            # the feature order the model expects
 
 app = FastAPI(title="Unslouch ML service", version=MODEL_VERSION)   # create the web app
