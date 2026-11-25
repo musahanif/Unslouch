@@ -1,0 +1,5 @@
+ANYA A Dataset for Ergonomic Posture Analysis/
+Rehabilitation Motion & Posture Monitoring Dataset/
+data/
+*.pdf
+**/__pycache__
