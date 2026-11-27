@@ -32,13 +32,14 @@ const password = z
   .min(8, "Password must contain at least 8 characters")
   .max(72, "Password must contain at most 72 characters");
 
+const otp = z
+  .string({ error: "Verification code is required" })
+  .trim()
+  .regex(/^\d{6}$/, "Verification code must contain exactly 6 digits");
+
 const registerSchema = z
   .object({
-    name: z
-      .string({ error: "Name is required" })
-      .trim()
-      .min(2, "Name must contain at least 2 characters")
-      .max(100),
+    name: z.string().trim().min(2).max(100),
     email,
     password,
   })
@@ -46,6 +47,32 @@ const registerSchema = z
 
 const loginSchema = z.object({ email, password }).strict();
 
+const verifyEmailSchema = z.object({ email, otp }).strict();
+
+const resendVerificationSchema = z.object({ email }).strict();
+
+const requestPasswordResetSchema = z.object({ email }).strict();
+
+const resetPasswordSchema = z
+  .object({
+    token: z
+      .string()
+      .trim()
+      .min(32)
+      .max(256)
+      .regex(
+        /^[A-Za-z0-9_-]+$/,
+        "Password reset link is invalid",
+      ),
+    password,
+  })
+  .strict();
+
 export const validateRegister = validate(registerSchema);
 export const validateLogin = validate(loginSchema);
-
+export const validateVerifyEmail = validate(verifyEmailSchema);
+export const validateResendVerification = validate(resendVerificationSchema);
+export const validateRequestPasswordReset = validate(
+  requestPasswordResetSchema,
+);
+export const validateResetPassword = validate(resetPasswordSchema);

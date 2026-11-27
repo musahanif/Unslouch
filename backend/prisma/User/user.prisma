@@ -3,6 +3,9 @@ model User {
   name                       String
   email                      String         @unique
   password                   String
+  email_verified_at          DateTime?
+  auth_version               Int            @default(0)
+
   scoliosis_type             SCOLIOSIS_TYPE?
   target_daily_exercise_min  Int?
   posture_alert_threshold_sec Int?
@@ -15,6 +18,9 @@ model User {
   alerts                     Alert[]
   exercise_recommendations   Exercise_Recomendation[]
   exercise_logs              Exercise_Log[]
+
+  email_verification_otp     EmailVerificationOtp?
+  password_reset_token       PasswordResetToken?
 
   calibration_commands    CalibrationCommand[]
 }

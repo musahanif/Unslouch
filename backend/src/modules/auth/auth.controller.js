@@ -28,10 +28,31 @@ const sendAuthenticatedResponse = (
 export const register = async (req, res) => {
   const data = await authService.register(req.validatedBody);
 
-  return sendAuthenticatedResponse(res, {
+  return sendSuccess(res, {
     statusCode: 201,
-    message: "Registration successful",
+    message: "Registration successful. Verify your email to continue.",
+    data: {
+      user: data.user,
+      verificationRequired: true,
+    },
+  });
+};
+
+export const verifyEmail = async (req, res) => {
+  const data = await authService.verifyEmail(req.validatedBody);
+
+  return sendAuthenticatedResponse(res, {
+    message: "Email verified successfully",
     data,
+  });
+};
+
+export const resendEmailVerification = async (req, res) => {
+  await authService.resendEmailVerification(req.validatedBody.email);
+
+  return sendSuccess(res, {
+    message:
+      "If an unverified account exists for that email address, a verification code has been sent.",
   });
 };
 
@@ -41,6 +62,25 @@ export const login = async (req, res) => {
   return sendAuthenticatedResponse(res, {
     message: "Login successful",
     data,
+  });
+};
+
+export const requestPasswordReset = async (req, res) => {
+  await authService.requestPasswordReset(req.validatedBody.email);
+
+  return sendSuccess(res, {
+    message:
+      "If a verified account exists for that email address, a password reset link has been sent.",
+  });
+};
+
+export const resetPassword = async (req, res) => {
+  await authService.resetPassword(req.validatedBody);
+
+  res.clearCookie("unslouch_token", authCookieOptions);
+
+  return sendSuccess(res, {
+    message: "Password reset successfully. Please sign in again.",
   });
 };
 

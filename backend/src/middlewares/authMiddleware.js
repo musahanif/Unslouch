@@ -34,14 +34,19 @@ export const authenticate = asyncHandler(async (req, _res, next) => {
   if (
     typeof payload !== "object" ||
     !payload.sub ||
-    !payload.email
+    !payload.email ||
+    !Number.isInteger(payload.authVersion)
   ) {
     throw new AppError("Authentication token payload is invalid", 401);
   }
 
   const account = await authRepository.findUserByEmail(payload.email);
 
-  if (!account || account.user_id !== payload.sub) {
+  if (
+    !account ||
+    account.user_id !== payload.sub ||
+    account.auth_version !== payload.authVersion
+  ) {
     throw new AppError("Authenticated account is unavailable", 401);
   }
 

@@ -1,0 +1,27 @@
+model EmailVerificationOtp {
+  email_verification_otp_id String   @id @default(cuid())
+  user_id                   String   @unique
+  code_hash                 String
+  attempts                  Int      @default(0)
+  expires_at                DateTime
+  last_sent_at              DateTime
+  created_at                DateTime @default(now())
+  updated_at                DateTime @updatedAt
+
+  user                      User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@index([expires_at])
+}
+
+model PasswordResetToken {
+  password_reset_token_id String   @id @default(cuid())
+  user_id                 String   @unique
+  token_hash              String   @unique
+  expires_at              DateTime
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
+
+  user                    User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@index([expires_at])
+}
