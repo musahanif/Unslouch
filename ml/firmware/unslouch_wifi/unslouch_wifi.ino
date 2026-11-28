@@ -5,10 +5,10 @@
 #include <WiFi.h>          // Wi-Fi connection
 #include <HTTPClient.h>    // sends data with HTTP POST
 
-// ---------- settings: CHANGE THESE ----------
-const char* WIFI_SSID = "Aurel";      // use your phone hotspot (campus Wi-Fi usually won't work)
-const char* WIFI_PASS = "ribetluah";
-const char* SERVER_URL = "http://172.20.10.3:5000/ingest";   // laptop IP (see `ipconfig`) + receiver port
+// ---------- settings to change ----------
+const char* WIFI_SSID = "HOTSPOT_NAME";      // use phone hotspot 
+const char* WIFI_PASS = "HOTSPOT PASSWORD";
+const char* SERVER_URL = "http://<IPCONFIG>:5000/ingest";   // laptop IP (see `ipconfig`) + receiver port
 // ---------------------------------------------
 
 const uint8_t MPU_ADDR = 0x68;        // sensor I2C address (AD0 to GND)
